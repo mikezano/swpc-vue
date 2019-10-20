@@ -1,0 +1,71 @@
+<DOCTYPE! html>
+	<html lang="en">
+		<head>
+			<script src="https://unpkg.com/vue"></script>
+		</head>
+		<body>
+			<div id="app">
+				<h1>{{ title }}</h1>
+				<ul class="fruits">
+					<li class="fruit" v-for="product in products">
+						<div class="fruit__name">{{ product.name }}</div>
+						<div class="fruit__icon">{{ product.icon }}</div>
+						<div class="fruit__price">Price: ${{ product.price }}</div>
+						<div class="fruits__quantity">Quantity: {{ product.quantity }}</div>
+					</li>
+				</ul>
+				<h2>Total Inventory Value: ${{ totalInventoryValue }}</h2>
+			</div>
+		</body>
+		<style>
+			@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+			body {
+				font-family: 'Roboto';
+			}
+
+			.fruits {
+				display: flex;
+				flex-wrap: wrap;
+				list-style-type: none;
+			}
+
+			.fruit {
+				border: 2px solid gray;
+				border-radius: 4px;
+				margin: 10px;
+				padding: 10px;
+			}
+
+			.fruit__name {
+				font-size: 20px;
+				font-weight: bold;
+			}
+			.fruit__icon {
+				font-size: 80px;
+			}
+		</style>
+		<script>
+			var app = new Vue({
+				el: '#app',
+				data: {
+					title: 'Fruits R Mike',
+					products: [],
+				},
+				created: function() {
+					fetch('https://my-json-server.typicode.com/mikezano/zson/fruits')
+						.then(response => response.json())
+						.then(json => {
+							this.products = json;
+						});
+				},
+				computed: {
+					totalInventoryValue() {
+						return this.products.reduce((sum, fruit) => {
+							return sum + fruit.quantity * fruit.price;
+						}, 0);
+					},
+				},
+			});
+		</script>
+	</html>
+</DOCTYPE!>

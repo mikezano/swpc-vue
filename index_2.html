@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			Fruits R Us
+		</title>
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	</head>
+	<body>
+		<style>
+			body{
+				font-family: 'Roboto', sans-serif;
+			}
+			.fruits{
+				display:flex;
+				flex-wrap: wrap;
+				list-style-type:none;
+			}
+			.fruits__card{
+				border:2px solid gray;
+				border-radius: 4px;
+				margin: 1rem;
+				padding:1rem;
+				display:flex;
+				flex-direction: column;
+				align-items:center;
+
+			}
+			.fruits__card--out{
+				border-color: red;
+			}
+			.fruits__icon{
+				font-size:80px;
+			}
+			.fruits__input{
+				width:50px;
+			}
+		</style>
+		<div id="app">
+			<h1>Fruits R' Us</h1>
+			<router-link to="/foo">Go to Foo</router-link>
+			<router-link to="/bar">Go to Bar</router-link>
+			<router-view></router-view>
+			<ul class="fruits">
+				<li class="fruits__card" v-for="fruit in fruits" v-bind:class="{'fruits__card--out': fruit.quantity <= 0}">
+					<div class="fruits__name">{{fruit.name}}</div>
+					<div class="fruits__icon">{{fruit.icon}}</div>
+					<div class="fruits__price">Price: {{fruit.price}}</div>
+					<div class="fruits__quantity" v-if="fruit.quantity <= 0">(Out Of Stock)</div>
+					<div class="fruits__quantity" else>Quantity: 
+						<input class="fruits__input" type="number" v-model.number="fruit.quantity" />
+					</div>
+					<button @click="fruit.quantity++">Add</button>
+					
+				</li>
+			</ul>
+			<h2>Total Inventory Value : {{totalInventoryValue}}</h2>
+		</div>
+
+		<script src="https://unpkg.com/vue" ></script>
+		<script src="https://unpkg.com/vue-router" ></script>
+
+		<script>
+
+			const Foo = { template: '<div>fooooooooooooooo</div>' }
+			const Bar = { template: '<div>bar</div>' }
+
+			const routes = [
+				{ path: '/foo', component: Foo },
+				{ path: '/bar', component: Bar }
+			]
+
+			const router = new VueRouter({
+				routes // short for `routes: routes`
+			  })
+
+			const app= new Vue({
+				router,
+				el: '#app',
+				data:{
+					fruits: []
+				},
+				computed:{
+					totalInventoryValue(){
+						return this.fruits.reduce((sum, fruit)=>{
+							return sum + (fruit.quantity * fruit.price);
+						},0);
+					}
+				},
+				created(){
+					fetch('https://my-json-server.typicode.com/mikezano/zson/fruits')
+					.then(response => response.json())
+					.then(json => {
+						this.fruits = json
+					})
+				}
+			});
+		</script>
+	</body>
+</html>

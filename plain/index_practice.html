@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			Fruits R' Us
+		</title>
+	</head>
+	<body>
+		<div id="app">
+			<h1>{{title}}</h1>
+			<ul class="fruits">
+				<li v-for="fruit in fruits">
+
+					<div class="fruit" v-bind:class="{'fruit--none' : isOutOfStock(fruit)}" >
+						<div class="fruit__name">{{fruit.name}}</div>
+						<div class="fruit__icon">{{fruit.icon}}</div>
+						<div class="fruit__price">Price: ${{fruit.price}} each</div>
+						<div class="fruit__quantity">
+							Quantity:
+							<input class="fruit__input" type="number" v-model:bind="fruit.quantity" />
+						</div>
+						<div v-if="isOutOfStock(fruit)">OUT OF STOCK</div>
+						<div v-else>In Stock</div>
+						<button class="fruit__add" @click="addFruit(fruit)" >Add</button>
+					</div>
+
+				</li>
+			</ul>
+			<h1>Total Inventory Value: ${{totalInventoryValue}}</h1></h>
+		</div>
+
+		<script src="https://unpkg.com/vue" ></script>
+		<script>
+			const vue = new Vue({
+				el: '#app',
+				data: {
+					title: "Fruits R' Us",
+					fruits: []
+				},
+				created(){
+					fetch('https://my-json-server.typicode.com/mikezano/zson/fruits')
+					.then(response => response.json())
+					.then(json =>{
+						this.fruits = json;
+					})
+				},
+				computed:{
+					totalInventoryValue(){
+						return this.fruits.reduce((sum, fruit)=>{
+							return sum + (fruit.quantity * fruit.price);
+						},0);
+					}
+				},
+				methods:{
+					addFruit(fruit){
+						fruit.quantity++;
+					},
+					isOutOfStock(fruit){
+						return fruit.quantity <= 0 ? true: false;
+					}
+				}
+			});
+		</script>
+
+		<style>
+			@import url('https://fonts.googleapis.com/css?family=Muli');
+			body{
+				font-family: 'Muli', sans-serif;
+			}
+			h1{
+				text-align:center;
+			}
+
+			.fruits{
+				display:flex;
+				flex-wrap:wrap;
+				list-style-type:none;
+			}
+			.fruit{
+				border: 2px solid gray;
+				border-radius:4px;
+				padding: 10px;
+				margin:10px;
+				width:150px;
+				text-align:center;
+			}
+			.fruit--none{
+				border:2px solid red;
+			}
+			.fruit__name{
+				font-weight:bold;
+				font-size:20px;
+			}
+			.fruit__input{
+				width:60px;
+			}
+			.fruit__icon{
+				font-size:100px;
+			}
+		</style>
+	</body>
+</html>
