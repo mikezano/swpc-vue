@@ -23,6 +23,11 @@
 4. Create a Vue project
    - `vue create <project-name>`
    - Run through set up steps
+   - Add these options: (Babel, Linter/Formatter, Router, Unit Testing)
+   - History mode for router ? say no
+   - Select ESLint + Prettier, Lint on save
+   - Choose Jest for the unit testing
+   - Select 'In dedicated config files'
    - Wait for everything to install (~ 5min)
    - You should then be able to `cd` into the project folder and run `npm run serve` to launch the site.
 
