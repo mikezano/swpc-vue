@@ -1,48 +1,50 @@
 <template>
-	<li class="fruit" v-bind:class="{ 'fruit--oos': !isInStock() }">
+	<li class="fruit" v-bind:class="{'fruit--oos': !isInStock(data)}">
 		<div class="fruit__name">{{ data.name }}</div>
 		<div class="fruit__icon">{{ data.icon }}</div>
-		<div class="fruit__price">${{ data.price }}</div>
-		<div class="fruit__quantity" v-if="isInStock()">
+		<div class="fruit__price">Price: ${{ data.price }}</div>
+		<div class="fruit__quantity" v-if="isInStock(data)">
 			Quantity:
 			<input class="fruit__input" type="number" v-model="data.quantity" />
 		</div>
-		<div v-else>Out of stock</div>
-		<button @click="addQuantity()">Add</button>
+		<div v-else>Out of Stock</div>
+		<button @click="addFruit(data)">Add</button>
 	</li>
 </template>
 
 <script>
 export default {
-	name: "Fruit",
-	props: ["data"],
+	props: ['data'],
 	methods: {
-		addQuantity() {
-			this.data.quantity++;
+		addFruit(fruit) {
+			fruit.quantity++;
 		},
-		isInStock() {
-			return this.data.quantity > 0;
-		}
-	}
+		isInStock(fruit) {
+			return fruit.quantity > 0;
+		},
+	},
 };
 </script>
 
-<style scoped>
+<style>
 .fruit {
 	border: 2px solid gray;
-	border-radius: 5px;
 	padding: 10px;
 	margin: 10px;
+	border-radius: 4px;
 }
+
 .fruit--oos {
 	border-color: red;
 }
+
 .fruit__name {
-	font-size: 20px;
 	font-weight: bold;
+	font-size: 20px;
 }
+
 .fruit__icon {
-	font-size: 80px;
+	font-size: 100px;
 }
 .fruit__input {
 	width: 50px;
