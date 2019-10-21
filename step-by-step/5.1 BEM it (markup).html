@@ -1,0 +1,42 @@
+<DOCTYPE! html>
+	<html lang="en">
+		<head>
+			<script src="https://unpkg.com/vue"></script>
+		</head>
+		<body>
+			<div id="app">
+				<h1>{{ title }}</h1>
+				<ul class="fruits">
+					<li class="fruit" v-for="fruit in fruits">
+						<div class="fruit__name">{{ fruit.name }}</div>
+						<div class="fruit__icon">{{ fruit.icon }}</div>
+						<div class="fruit__price">${{ fruit.price }}</div>
+						<div class="fruit__quantity">Quantity: {{ fruit.quantity }}</div>
+					</li>
+				</ul>
+			</div>
+		</body>
+		<script>
+			const app = new Vue({
+				el: '#app',
+				data: {
+					title: 'Fruits R Us',
+					fruits: [],
+				},
+				created() {
+					fetch('https://my-json-server.typicode.com/mikezano/zson/fruits')
+						.then(response => response.json())
+						.then(json => {
+							this.fruits = json;
+						});
+				},
+			});
+		</script>
+		<style>
+			@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+			body {
+				font-family: 'Roboto';
+			}
+		</style>
+	</html>
+</DOCTYPE!>

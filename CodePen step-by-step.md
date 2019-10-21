@@ -1,0 +1,4 @@
+- Add Javascript processor (Babel)
+- Include Vue library (don't forget to actually select it)
+- Add markup #app
+- Create const app = .... to hold app
