@@ -1,45 +1,48 @@
 <template>
 	<div>
-		<h1>Fruits</h1>
-		<ul class="fruits" v-if="fruits.length > 0">
-			<li class="fruit" v-for="fruit in fruits" v-bind:key="fruit.id">
-				<Fruit v-bind:data="fruit"></Fruit>
-			</li>
+		<h1>{{title}}</h1>
+		<ul class="fruits">
+			<Fruit v-for="fruit in fruits" v-bind:key="fruit.id" :data="fruit" />
 		</ul>
-		<h1>Total Value: ${{ totalValue }}</h1>
+		<h2>Total Value: ${{totalValue}}</h2>
 	</div>
 </template>
 
 <script>
-import Fruit from "../components/Fruit.vue";
+import Fruit from '../components/Fruit.vue';
 export default {
-	name: "fruits",
 	data() {
 		return {
-			fruits: []
+			title: 'Fruits R Us',
+			fruits: [],
 		};
 	},
 	created() {
-		fetch("https://my-json-server.typicode.com/mikezano/zson/fruits")
+		fetch('https://my-json-server.typicode.com/mikezano/zson/fruits')
 			.then(response => response.json())
 			.then(json => {
 				this.fruits = json;
 			});
 	},
 	components: {
-		Fruit
+		Fruit,
 	},
 	computed: {
 		totalValue() {
 			return this.fruits.reduce((sum, fruit) => {
 				return sum + fruit.price * fruit.quantity;
 			}, 0);
-		}
-	}
+		},
+	},
 };
 </script>
 
-<style scoped>
+<style>
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+body {
+	font-family: 'Roboto';
+}
+
 .fruits {
 	display: flex;
 	flex-wrap: wrap;
